@@ -87,27 +87,25 @@ app.post('/api/user', (req,res) => {
     })
 })
 
-app.post('/api/user/login', (req,res) => {
+app.post('/api/user/login',(req,res)=>{
+    User.findOne({'email':req.body.email},(err,user)=>{
+        if(!user) return res.json({isAuth:false,message:'Auth failed, email not found'})
 
-    User.findOne({'email':req.body.email}, (err,user) => {
-        if(err) return res.status(400).json({
-            isAuth: false,
-            err
-        });
-        if(!user) return res.status(400).json({
-            isAuth: false,
-            message: 'Auth failed: Wrong email or password'
-        });
-
-        user.comparePassword(req.body.password, (err, isMatch) => {
-            if(!isMatch) return json({
-                isAuth: false,
-                message: 'Auth failed: Wrong email or password'
+        user.comparePassword(req.body.password,(err,isMatch)=>{
+            if(!isMatch) return res.json({
+                isAuth:false,
+                message:'Wrong password'
             });
-            
 
+            user.generateToken((err,user)=>{
+                if(err) return res.status(400).send(err);
+                res.cookie('auth',user.token).json({
+                    isAuth:true,
+                    id:user._id,
+                    email:user.email
+                })
+            })
         })
-
     })
 })
 
