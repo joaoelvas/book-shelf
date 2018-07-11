@@ -4,7 +4,6 @@ let auth = (req, res, next) => {
     let token = req.cookies.auth;
 
     User.findByToken(token, (err,user) => {
-        console.log(user._id)
         if(err) throw err;
         if(!user) return res.status(404).json({
             success: false,
