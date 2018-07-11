@@ -58,7 +58,7 @@ userSchema.methods.comparePassword = function(candidatePassword,cb){
     })
 }
 
-userSchema.methods.generateToken = function(cb){
+userSchema.methods.generateToken = function(cb) {
     const user = this;
     jwt.sign(user._id.toHexString(), config.SECRET,(err,token) => {
         user.token = token;
@@ -67,12 +67,6 @@ userSchema.methods.generateToken = function(cb){
             cb(null,user)
         })
     });
-
-    // user.token = token;
-    // user.save((err, user) => {
-    //     if(err) return cb(err);
-    //     cb(null,user)
-    // })
 }
 
 const User = mongoose.model('User', userSchema);
