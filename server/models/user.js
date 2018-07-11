@@ -51,11 +51,22 @@ userSchema.pre('save', function(next) {
     } else next();
 })
 
-userSchema.methods.comparePassword = (candidatePassword, cb) => {
-    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+userSchema.methods.comparePassword = function(candidatePassword,cb){
+    bcrypt.compare(candidatePassword,this.password,(err, isMatch) => {
         if(err) return cb(err);
-        cb(null, isMatch);
+        cb(null,isMatch);
     })
+}
+
+userSchema.methods.generateToken = function(cb) {
+    const user = this;
+    jwt.sign(user._id.toHexString(), config.SECRET,(err,token) => {
+        user.token = token;
+        user.save((err, user) => {
+            if(err) return cb(err);
+            cb(null,user)
+        })
+    });
 }
 
 const User = mongoose.model('User', userSchema);
