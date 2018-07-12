@@ -22,7 +22,7 @@
     "eject": "react-scripts eject"
   },
   "proxy": {
-    "/api/":{
+    "/api/": {
       "target": "http://localhost:8080"
     }
   }
