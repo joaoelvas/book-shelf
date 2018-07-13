@@ -53,3 +53,15 @@ export function clearBookWithReviewer() {
         }
     }
 }
+
+/*========= USER =========*/
+
+export function loginUser({email,password}) {
+
+    const req = axios.post('/api/user/login', {email,password}).then(res => res.data)
+
+    return {
+        type: 'USER_LOGIN',
+        payload: req
+    }
+}
