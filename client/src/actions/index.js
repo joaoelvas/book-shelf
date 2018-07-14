@@ -54,6 +54,22 @@ export function clearBookWithReviewer() {
     }
 }
 
+export function addBook(book) {
+    const req = axios.post('/api/book',book).then(res => res.data);
+
+    return {
+        type: 'ADD_BOOK',
+        payload: req
+    }
+}
+
+export function clearNewBook() {
+    return {
+        type: 'CLEAR_NEW_BOOK',
+        payload: {}
+    }
+}
+
 /*========= USER =========*/
 
 export function loginUser({email,password}) {
@@ -65,3 +81,13 @@ export function loginUser({email,password}) {
         payload: req
     }
 }
+
+export function auth() {
+    const req = axios.get('/api/auth').then(res => res.data);
+
+    return {
+        type: 'USER_AUTH',
+        payload: req
+    }
+}
+

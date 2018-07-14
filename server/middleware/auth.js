@@ -3,9 +3,14 @@ const { User } = require('../models/user');
 let auth = (req, res, next) => {
     let token = req.cookies.auth;
 
+    if(!token) return res.json({
+        success: false,
+        message: 'No user logged in'
+    })
+
     User.findByToken(token, (err,user) => {
         if(err) throw err;
-        if(!user) return res.status(404).json({
+        if(!user) return res.json({
             success: false,
             message: 'No user logged in'
         })
