@@ -18,6 +18,8 @@ app.use(cookieParser());
 
 // GET //
 app.get('/api/auth', auth, (req,res) => {
+    console.log(`API call: GET /api/auth userId=${req.user._id}`);
+
     res.json({
         isAuth: true,
         id: req.user._id,
@@ -28,6 +30,8 @@ app.get('/api/auth', auth, (req,res) => {
 })
 
 app.get('/api/user/logout', auth, (req,res) => {
+    console.log(`API call: GET /api/user/logout userId=${req.user._id}`);
+
     req.user.deleteToken(req.token, (err,user) => {
         if(err) return res.status(400).send(err);
         res.status(200).json({
@@ -37,6 +41,8 @@ app.get('/api/user/logout', auth, (req,res) => {
 })
 
 app.get('/api/book', (req,res) => {
+    console.log(`API call: GET /api/book bookId=${req.query.id}`);
+
     let id = req.query.id;
 
     Book.findById(id, (err,doc) => {
@@ -46,6 +52,7 @@ app.get('/api/book', (req,res) => {
 })
 
 app.get('/api/books', (req,res) => {
+    console.log(`API call: GET /api/books`);
 
     let skip = req.query.skip;
     let limit = req.query.limit;
@@ -78,6 +85,8 @@ app.get('/api/books', (req,res) => {
 })
 
 app.get('/api/reviewer', (req,res) => {
+    console.log(`API call: GET /api/reviewer userId=${req.query.id}`);
+
     let id = req.query.id;
 
     User.findById(id ,(err,doc) => {
@@ -90,6 +99,8 @@ app.get('/api/reviewer', (req,res) => {
 })
 
 app.get('/api/users', (req,res) => {
+    console.log(`API call: GET /api/users`);
+
     User.find({}, (err,users) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(users);
@@ -97,6 +108,8 @@ app.get('/api/users', (req,res) => {
 })
 
 app.get('/api/user/posts', (req,res) => {
+    console.log(`API call: GET /api/user/posts userId=${req.query.user}`);
+
     Book.find({ownerId:req.query.user}).exec((err,docs) => {
         if(err) return res.status(400).send(err);
         res.status(200).send(docs);
@@ -105,6 +118,8 @@ app.get('/api/user/posts', (req,res) => {
 
 // POST //
 app.post('/api/book', (req,res) => {
+    console.log(`API call: POST /api/book`);
+
     const book = new Book(req.body);
 
     book.save((err,doc) => {
@@ -118,6 +133,8 @@ app.post('/api/book', (req,res) => {
 })
 
 app.post('/api/user', (req,res) => {
+    console.log(`API call: POST /api/user`);
+
     const user = new User(req.body);
 
     user.save((err,doc) => {
@@ -133,6 +150,8 @@ app.post('/api/user', (req,res) => {
 })
 
 app.post('/api/user/login',(req,res)=>{
+    console.log(`API call: POST /api/user/login`);
+
     User.findOne({'email':req.body.email},(err,user)=>{
         if(!user) return res.json({isAuth:false,message:'Auth failed, email not found'})
 
@@ -156,6 +175,8 @@ app.post('/api/user/login',(req,res)=>{
 
 // UPDATE //
 app.put('/api/book', (req,res) => {
+    console.log(`API call: PUT /api/book`);
+
     Book.findByIdAndUpdate(req.body._id, req.body, {new: true}, (err,doc) => {
         if(err) return res.status(400).send(err);
         res.status(200).json({
@@ -167,6 +188,8 @@ app.put('/api/book', (req,res) => {
 
 // DELETE //
 app.delete('/api/book', (req,res) => {
+    console.log(`API call: DELETE /api/book`);
+
     let id = req.query.id;
 
     if(!id) return res.status(400).json({
