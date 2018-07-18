@@ -6,7 +6,7 @@ const config = {
     },
     default: {
         SECRET: 'supersecretpassword123',
-        DATABASE: 'mongodb://localhost:27017/books-shelf',
+        DATABASE: 'mongodb://thor.ddnsking.com:27017/books-shelf',
         PORT: 8080
     }
 }

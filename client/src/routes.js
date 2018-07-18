@@ -8,8 +8,10 @@ import User from './components/Admin';
 import AddReview from './containers/Admin/add';
 import UserPosts from './components/Admin/user_posts';
 import EditReview from './containers/Admin/edit';
+import Register from './containers/Admin/register';
 
 import Auth from './hoc/auth';
+
 
 const Routes = () => {
     return (
@@ -20,6 +22,7 @@ const Routes = () => {
                 <Route path="/user" exact component={Auth(User, true)}/>
                 <Route path="/user/reviews" exact component={Auth(UserPosts, true)}/>
                 <Route path="/user/reviews/add" exact component={Auth(AddReview, true)}/>
+                <Route path="/user/register" exact component={Auth(Register, true)}/>
                 <Route path="/user/reviews/edit/:id" exact component={Auth(EditReview, true)}/>
                 <Route path="/books/:id" exact component={Auth(BookView)}/>
             </Switch>

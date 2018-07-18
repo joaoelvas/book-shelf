@@ -66,7 +66,7 @@ export function addBook(book) {
 export function clearNewBook() {
     return {
         type: 'CLEAR_NEW_BOOK',
-        payload: {}
+        payload: null
     }
 }
 
@@ -77,6 +77,48 @@ export function getUserPosts(userId) {
     return {
         type: 'GET_USER_POSTS',
         payload: req
+    }
+}
+
+export function getBook(id) {
+
+    const req = axios.get(`/api/book?id=${id}`).then(res => res.data)
+
+    return {
+        type: 'GET_BOOK',
+        payload: req
+    }
+}
+
+export function updateBook(data) {
+
+    const req = axios.put('/api/book', data).then(res => res.data);
+
+    return {
+        type: 'UPDATE_BOOK',
+        payload: req
+    }
+}
+
+export function deleteBook(id) {
+
+    const req = axios.delete(`/api/book?id=${id}`).then(res => res.data);
+
+    return {
+        type: 'DELETE_BOOK',
+        payload: req
+    }
+
+}
+
+export function clearBook() {
+    return {
+        type: 'CLEAR_BOOK',
+        payload: {
+            book: null,
+            updatebook: false,
+            postdeleted: false
+        }
     }
 }
 
@@ -98,6 +140,35 @@ export function auth() {
     return {
         type: 'USER_AUTH',
         payload: req
+    }
+}
+
+export function getUsers() {
+    const req = axios.get('/api/users').then(res => res.data);
+
+    return {
+        type: 'GET_USERS',
+        payload: req
+    }
+}
+
+export function registerUser(user, userList) {
+
+    const req = axios.post(`/api/user`, user)
+
+    return (dispatch) => {
+        req.then(({data}) => {
+            let users = data.success ? [...userList,data.user]:userList
+            let res = {
+                success: data.success,
+                users
+            }
+
+            dispatch({
+                type: 'USER_REGISTER',
+                payload: res
+            })
+        })
     }
 }
 

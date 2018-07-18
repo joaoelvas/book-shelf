@@ -20,7 +20,7 @@ class UserPosts extends Component {
                     }>
                         {item.name}
                     </Link></td>
-                    <td>{item.name}</td>
+                    <td>{item.author}</td>
                     <td>
                         {moment(item.createdAt).format("DD/MM/YY")}
                     </td>

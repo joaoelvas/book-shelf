@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-//import { addBook, clearNewBook } from '../../actions';
-
+import { getBook, updateBook, deleteBook, clearBook } from '../../actions';
+import { bindActionCreators } from 'redux';
 
 class EditBook extends PureComponent {
 
@@ -31,12 +31,66 @@ class EditBook extends PureComponent {
 
     submitForm = (e) => {
         e.preventDefault();
+        
+        this.props.updateBook(this.state.formdata);
+    }
 
+    deletePost = () => {
+        this.props.deleteBook(this.state.formdata._id);
+    }
+
+    redirectUser = () => {
+        setTimeout(() => {
+            this.props.history.push('/user/reviews')
+        }, 1000)
+    }
+
+    componentWillMount() {
+        this.props.getBook(this.props.match.params.id);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let book = nextProps.books.book;
+        this.setState({
+            formdata:{
+                _id:book._id,
+                name:book.name,
+                author:book.author,
+                review:book.review,
+                pages:book.pages,
+                rating:book.rating,
+                price:book.price
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        this.props.clearBook()
     }
 
     render() {
+        console.log(this.props)
+        let books = this.props.books;
         return (
             <div className="rl_container article">
+
+                {
+                    books.updatebook ?
+                        <div className="edit_confirm">
+                            Post updated, <Link to={`/books/${books.book._id}`}>
+                                Click here to see your post
+                            </Link>
+                        </div>
+                    : null
+                }
+                {
+                    books.postDeleted ? 
+                        <div className="red_tag">
+                            Post Deleted
+                            { this.redirectUser() }
+                        </div>
+                    : null
+                }
                 <form onSubmit={this.submitForm}>
                     <h2>Edit review</h2>
 
@@ -97,7 +151,9 @@ class EditBook extends PureComponent {
                     <button type='submit'>Edit review</button>
 
                     <div className="delete_post">
-                        <div className="button">
+                        <div className="button"
+                            onClick={this.deletePost}
+                        >
                             Delete review
                         </div>
                     </div>
@@ -108,11 +164,19 @@ class EditBook extends PureComponent {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        getBook,
+        updateBook,
+        deleteBook,
+        clearBook
+    },dispatch)
+}
+
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         books: state.books
     }
 }
 
-export default connect(mapStateToProps)(EditBook);
+export default connect(mapStateToProps,mapDispatchToProps)(EditBook);
