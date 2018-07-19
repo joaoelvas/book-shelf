@@ -79,8 +79,6 @@ const SideNavItems = ({user}) => {
                         element(item,i)
                     : null
                 }
-
-
                 // return element(item,i);
             })
         : null
