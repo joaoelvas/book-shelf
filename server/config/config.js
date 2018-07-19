@@ -1,7 +1,7 @@
 const config = {
     production: {
         SECRET: process.env.SECRET,
-        DATABASE: process.env.MONGODB_URI,
+        DATABASE: 'mongodb://thor.ddnsking.com:27017/books-shelf',
         PORT: process.env.PORT
     },
     default: {
